@@ -1,0 +1,33 @@
+<project name="viterbi" basedir="." default="run">
+
+    <property name="src.dir"     value="src"/>
+    <property name="out.dir"   value="out"/>
+    <property name="build.dir"   value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir"     value="${build.dir}/jar"/>
+    <property name="main-class"  value="${ant.project.name}.Main"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${out.dir}"/>
+    </target>
+
+    <target name="build" depends="clean">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false"/>
+    </target>
+
+    <target name="jar" depends="build">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true" />
+    </target>
+
+</project>
